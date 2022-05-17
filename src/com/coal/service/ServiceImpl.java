@@ -12,50 +12,49 @@ import com.coal.service.ServiceImpl.Enitity.User.Role;
 
 public class ServiceImpl {
 
-	public  User createNewUser(String id, String name, String projectName, Calendar projectDeliverDate) {
-		User newUser = new User(id, name, projectName, projectDeliverDate,Role.User);
+	public User createNewUser(String id, String name, String projectName, Calendar projectDeliverDate) {
+		User newUser = new User(id, name, projectName, projectDeliverDate, Role.User);
 		return newUser;
 	}
-	
-	public  User createNewOperator(String id, String name) {
+
+	public User createNewOperator(String id, String name) {
 		User newOperator = new User(id, name, Role.Operator);
 		return newOperator;
 	}
 
-	public  Order createNewOrder(User user, String id) {
+	public Order createNewOrder(User user, String id) {
 		Order newOrder = new Order(id, user);
 		return newOrder;
 	}
-	
+
 	public void assignOrderFlow(Order order, OrderFlow flow) {
 		order.setOrderFlow(flow);
 	}
-	
+
 	public void startOrderFlow(Order order) {
 		order.setStatus(OrderStatus.progressing);
 		order.setCurrentStep(order.getOrderFlow().getRootAction());
 		order.getCurrentStep().getOrderHandler().handleOrder(order);
 	}
-	
+
 	public void moveNextStepOfOrder(Order order) {
-		if(order.getStatus() == OrderStatus.progressing) {
+		if (order.getStatus() == OrderStatus.progressing) {
 			order.getCurrentStep().getNextAction().getOrderHandler().handleOrder(order);
 		}
 	}
-	
-	public  List<Order> queryAllOrdersCreatedByUser(User user, OrderStatus orderStatus){
+
+	public List<Order> queryAllOrdersCreatedByUser(User user, OrderStatus orderStatus) {
 		return Arrays.asList();
 	}
 
 	public static class Enitity {
-		
-		
-		public static class OrderFlow{
+
+		public static class OrderFlow {
 			private String id;
 			private String flowName;
 			private OrderStepAction rootAction;
-			
-			public OrderFlow (String id, String flowName, OrderStepAction rootAction) {
+
+			public OrderFlow(String id, String flowName, OrderStepAction rootAction) {
 				this.id = id;
 				this.flowName = flowName;
 				this.rootAction = rootAction;
@@ -85,53 +84,60 @@ public class ServiceImpl {
 				this.rootAction = rootAction;
 			}
 		}
-		
-		
-		public static interface OrderHandler{
+
+		public static interface OrderHandler {
 			public Order handleOrder(Order order);
 		}
-		
-		public static class OrderStepAction{
+
+		public static class OrderStepAction {
 			private String id;
 			private String actionName;
 			private OrderHandler orderHandler;
 			private OrderStepAction nextAction;
 			private OrderStepAction previousAction;
-			
+
 			public OrderStepAction(String id, String actionName) {
 				this.setId(id);
 				this.setActionName(actionName);
 			}
+
 			public String getId() {
 				return id;
 			}
+
 			public void setId(String id) {
 				this.id = id;
 			}
+
 			public String getActionName() {
 				return actionName;
 			}
+
 			public void setActionName(String actionName) {
 				this.actionName = actionName;
 			}
+
 			public OrderStepAction getNextAction() {
 				return nextAction;
 			}
+
 			public OrderStepAction getPreviousAction() {
 				return previousAction;
 			}
+
 			public OrderHandler getOrderHandler() {
 				return orderHandler;
 			}
+
 			public void setOrderHandler(OrderHandler orderHandler) {
 				this.orderHandler = orderHandler;
 			}
-			
+
 		}
-		
+
 		public static class Order {
 			public static enum OrderStatus {
-				new_created, progressing, rejected, completed 
+				new_created, progressing, rejected, completed
 			}
 
 			private String id;
@@ -194,8 +200,8 @@ public class ServiceImpl {
 			public static enum UserStatus {
 				new_created, approved
 			}
-			
-			public static enum Role{
+
+			public static enum Role {
 				User, Operator, Admin
 			}
 
@@ -210,7 +216,7 @@ public class ServiceImpl {
 				this.status = UserStatus.new_created;
 			}
 
-			public User(String id, String name, String projectName, Calendar projectDeliverDate,Role role) {
+			public User(String id, String name, String projectName, Calendar projectDeliverDate, Role role) {
 				super();
 				this.id = id;
 				this.name = name;
