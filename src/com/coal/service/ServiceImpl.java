@@ -31,6 +31,18 @@ public class ServiceImpl {
 		order.setOrderFlow(flow);
 	}
 	
+	public void startOrderFlow(Order order) {
+		order.setStatus(OrderStatus.progressing);
+		order.setCurrentStep(order.getOrderFlow().getRootAction());
+		order.getCurrentStep().getOrderHandler().handleOrder(order);
+	}
+	
+	public void moveNextStepOfOrder(Order order) {
+		if(order.getStatus() == OrderStatus.progressing) {
+			order.getCurrentStep().getNextAction().getOrderHandler().handleOrder(order);
+		}
+	}
+	
 	public  List<Order> queryAllOrdersCreatedByUser(User user, OrderStatus orderStatus){
 		return Arrays.asList();
 	}
@@ -119,13 +131,14 @@ public class ServiceImpl {
 		
 		public static class Order {
 			public static enum OrderStatus {
-				new_created, rejected, completed 
+				new_created, progressing, rejected, completed 
 			}
 
 			private String id;
 			private User createdUser;
 			private OrderStatus status;
 			private OrderFlow orderFlow;
+			private OrderStepAction currentStep;
 
 			public Order(String id, User createdUser) {
 				super();
@@ -164,6 +177,14 @@ public class ServiceImpl {
 
 			public void setOrderFlow(OrderFlow orderFlow) {
 				this.orderFlow = orderFlow;
+			}
+
+			public OrderStepAction getCurrentStep() {
+				return currentStep;
+			}
+
+			public void setCurrentStep(OrderStepAction currentStep) {
+				this.currentStep = currentStep;
 			}
 
 		}
