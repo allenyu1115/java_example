@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.coal.service.ServiceImpl.Enitity.Order;
 import com.coal.service.ServiceImpl.Enitity.Order.OrderStatus;
+import com.coal.service.ServiceImpl.Enitity.OrderFlow;
 import com.coal.service.ServiceImpl.Enitity.User;
 import com.coal.service.ServiceImpl.Enitity.User.Role;
 
@@ -26,8 +27,8 @@ public class ServiceImpl {
 		return newOrder;
 	}
 	
-	public  void acceptOrder(User user, Order order) {
-		
+	public void assignOrderFlow(Order order, OrderFlow flow) {
+		order.setOrderFlow(flow);
 	}
 	
 	public  List<Order> queryAllOrdersCreatedByUser(User user, OrderStatus orderStatus){
@@ -35,6 +36,87 @@ public class ServiceImpl {
 	}
 
 	public static class Enitity {
+		
+		
+		public static class OrderFlow{
+			private String id;
+			private String flowName;
+			private OrderStepAction rootAction;
+			
+			public OrderFlow (String id, String flowName, OrderStepAction rootAction) {
+				this.id = id;
+				this.flowName = flowName;
+				this.rootAction = rootAction;
+			}
+
+			public String getId() {
+				return id;
+			}
+
+			public void setId(String id) {
+				this.id = id;
+			}
+
+			public String getFlowName() {
+				return flowName;
+			}
+
+			public void setFlowName(String flowName) {
+				this.flowName = flowName;
+			}
+
+			public OrderStepAction getRootAction() {
+				return rootAction;
+			}
+
+			public void setRootAction(OrderStepAction rootAction) {
+				this.rootAction = rootAction;
+			}
+		}
+		
+		
+		public static interface OrderHandler{
+			public Order handleOrder(Order order);
+		}
+		
+		public static class OrderStepAction{
+			private String id;
+			private String actionName;
+			private OrderHandler orderHandler;
+			private OrderStepAction nextAction;
+			private OrderStepAction previousAction;
+			
+			public OrderStepAction(String id, String actionName) {
+				this.setId(id);
+				this.setActionName(actionName);
+			}
+			public String getId() {
+				return id;
+			}
+			public void setId(String id) {
+				this.id = id;
+			}
+			public String getActionName() {
+				return actionName;
+			}
+			public void setActionName(String actionName) {
+				this.actionName = actionName;
+			}
+			public OrderStepAction getNextAction() {
+				return nextAction;
+			}
+			public OrderStepAction getPreviousAction() {
+				return previousAction;
+			}
+			public OrderHandler getOrderHandler() {
+				return orderHandler;
+			}
+			public void setOrderHandler(OrderHandler orderHandler) {
+				this.orderHandler = orderHandler;
+			}
+			
+		}
+		
 		public static class Order {
 			public static enum OrderStatus {
 				new_created, rejected, completed 
@@ -43,6 +125,7 @@ public class ServiceImpl {
 			private String id;
 			private User createdUser;
 			private OrderStatus status;
+			private OrderFlow orderFlow;
 
 			public Order(String id, User createdUser) {
 				super();
@@ -73,6 +156,14 @@ public class ServiceImpl {
 
 			public void setStatus(OrderStatus status) {
 				this.status = status;
+			}
+
+			public OrderFlow getOrderFlow() {
+				return orderFlow;
+			}
+
+			public void setOrderFlow(OrderFlow orderFlow) {
+				this.orderFlow = orderFlow;
 			}
 
 		}
@@ -107,8 +198,11 @@ public class ServiceImpl {
 				this.role = role;
 			}
 
-			public User(String id2, String name2, Role operator) {
-				// TODO Auto-generated constructor stub
+			public User(String id, String name, Role operator) {
+				super();
+				this.id = id;
+				this.name = name;
+				this.role = operator;
 			}
 
 			public String getId() {
