@@ -6,5 +6,11 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/ruoyi-admin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ruoyi-common"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ruoyi-framework"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ruoyi-generator"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ruoyi-quartz"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ruoyi-system"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
