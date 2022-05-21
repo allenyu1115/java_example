@@ -29,6 +29,10 @@ public class ServiceImpl {
 	public List<Order> queryAllOrdersCreatedByUser(User user, OrderStatus orderStatus) {
 		return Arrays.asList();
 	}
+	
+	public void assignOrderToUser(Order order, User user){
+		order.setAssignedUser(user);		
+	}
 
 	public static class Enitity {
 
@@ -45,6 +49,7 @@ public class ServiceImpl {
 			private String id;
 			private User createdUser;
 			private OrderStatus status;
+			private User assignedUser;
 
 
 			public Order(String id, User createdUser) {
@@ -76,6 +81,14 @@ public class ServiceImpl {
 
 			public void setStatus(OrderStatus status) {
 				this.status = status;
+			}
+
+			public User getAssignedUser() {
+				return assignedUser;
+			}
+
+			public void setAssignedUser(User assignedUser) {
+				this.assignedUser = assignedUser;
 			}
 
 		}
