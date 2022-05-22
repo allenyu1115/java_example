@@ -36,7 +36,6 @@
       @pagination="getList"
     />
 
-
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="工单名称" prop="orderName">
