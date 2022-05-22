@@ -38,6 +38,23 @@
     />
 
 
+    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+      <el-form ref="form" :model="form" label-width="100px">
+        <el-form-item label="工单名称" prop="orderName">
+          <el-input v-model="form.orderName" placeholder="请输入角色名称" />
+        </el-form-item>
+
+        <el-form-item label="备注">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+
   </div>
 </template>
 
@@ -53,14 +70,19 @@ export default {
        queryParams: {
         pageNum: 1,
         pageSize: 10       
-      }
+      },
+      form: {},
+      open: false,
+      title: ""
     };
   },
   created() {
     this.getList();
   },
   methods: {
-    handleAdd() {    
+    handleAdd() {  
+      this.open = true;
+      this.title = "添加工单";
     },
     getList() {
       function createOrder(orderId, orderStatus, createTime){
@@ -69,6 +91,14 @@ export default {
       this.orderList = [createOrder(1,"new","2022-05-22 20:10:10"),createOrder(2,"assigned","2022-05-22 20:10:12")];
       this.total = this.orderList.length;
     },
+    cancel() {
+      this.open = false;
+      this.resetForm("form");
+    },
+    submitForm: function() {
+
+    },
+
  
   }
 };
