@@ -12,7 +12,6 @@
       </el-col>    
     </el-row>
 
-
     <el-table  :data="orderList" >
       <el-table-column label="工单编号" prop="orderId" width="120" />
       <el-table-column label="工单状态" prop="orderStatus" align="center" width="100"/>>
@@ -90,6 +89,9 @@ export default {
       }
       this.orderList = [createOrder(1,"new","2022-05-22 20:10:10"),createOrder(2,"assigned","2022-05-22 20:10:12")];
       this.total = this.orderList.length;
+    },
+    handleUpdate(eachrow){
+
     },
     cancel() {
       this.open = false;
