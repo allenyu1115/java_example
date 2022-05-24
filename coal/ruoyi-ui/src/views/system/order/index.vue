@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { listOrder } from "@/api/system/order";
 
 export default {
   name: "Order",
@@ -67,7 +68,8 @@ export default {
        total: 0,
        queryParams: {
         pageNum: 1,
-        pageSize: 10       
+        pageSize: 10,
+        orderId:12       
       },
       form: {},
       open: false,
@@ -83,10 +85,13 @@ export default {
       this.title = "添加工单";
     },
     getList() {
-      function createOrder(orderId, orderStatus, createTime){
-        return {orderId:orderId, orderStatus:orderStatus, creatTime:createTime}
-      }
-      this.orderList = [createOrder(1,"new","2022-05-22 20:10:10"),createOrder(2,"assigned","2022-05-22 20:10:12")];
+      this.loading = true;
+      listOrder(this.queryParams).then(response => {
+          this.orderList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        }
+      );
       this.total = this.orderList.length;
     },
     handleUpdate(eachrow){
