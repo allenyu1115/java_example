@@ -1,7 +1,3 @@
-# ignore the two files below:
-coal/ruoyi-admin/src/main/resources/application-druid.yml
-coal/ruoyi-admin/src/main/resources/logback.xml
-
 # Compiled source #
 ###################
 *.com
@@ -39,3 +35,9 @@ coal/ruoyi-admin/src/main/resources/logback.xml
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# ignore directories & files:
+coal/ruoyi-admin/src/main/resources/application-druid.yml
+coal/ruoyi-admin/src/main/resources/logback.xml
+coal/ruoyi-ui/ruoyi-ui.code-workspace
+/.metadata/
